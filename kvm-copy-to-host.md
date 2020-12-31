@@ -7,12 +7,11 @@ Create container file on host with filesystem. Attach as block device to guest. 
 ## Steps
 ```
 # host
-mkdir /tmp/share
 
-# pick a sensible size, in my case 10 MiB
-dd if=/dev/zero of=/tmp/share/container.img bs=1M count=10
-mkfs.ext4 /tmp/share/container.img
-virsh attach-disk guest-name /tmp/share/container.img vdb
+# pick a sensible size container to fit files, in my case 10 MiB
+dd if=/dev/zero of=/local/tmp/container.img bs=1M count=10
+mkfs.ext4 /local/tmp/container.img
+virsh attach-disk guest-name /local/tmp/container.img vdb
 virsh console guest-name
 
 # guest
@@ -21,6 +20,7 @@ mount /dev/vdb /mnt
 cp target0 /mnt/
 ...
 umount /mnt
+# exit guest (e.g. ctrl+])
 
 # host
 virsh detach-disk guest-name vdb
@@ -29,6 +29,8 @@ cd /mnt
 cp target0 /dst-path/
 ...
 umount /mnt
-rm /tmp/share/container.img
+rm -rf /tmp/share
 
 ```
+
+😎
